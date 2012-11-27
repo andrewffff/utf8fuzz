@@ -1,0 +1,7 @@
+.*.swp
+*.o
+.DS_Store
+utf8fuzz
+kuhn_extracted.h
+codecs/AfUtf8/aftest
+
