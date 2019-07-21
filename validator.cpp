@@ -21,7 +21,7 @@
 using namespace std;
 using namespace AfUtf8;
 
-
+#ifdef __APPLE__
 class MbstowcsValidator : public Validator
 {
 private:
@@ -54,7 +54,7 @@ public:
 		return true;
 	}
 };
-
+#endif
 
 
 class IconvValidator : public Validator
@@ -219,10 +219,12 @@ vector<Validator*> Validator::createAll(bool includeBrokenImpls) {
 		/* iconv isn't picky enough - it's actually CESU-8 */
 		validators.push_back(new IconvValidator());
 
+#ifdef __APPLE__
 		/* FreeBSD/OS X's mbs* functions accept CESU-8 stuff and
 		 * also accept values above U+10FFFF
 		 */
 		validators.push_back(new MbstowcsValidator());
+#endif
 	}
 
 	return validators;
