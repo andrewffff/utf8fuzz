@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cassert>
 #include <cerrno>
+#include <memory>
 
 #include "verbosity.h"
 

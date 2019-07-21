@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * An aligned_alloc object holds a memory allocation of bytes.
