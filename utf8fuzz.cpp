@@ -19,10 +19,11 @@
 #include "testset_files.h"
 
 
-
+#ifdef __APPLE__
 // we don't use autoconf, so give cycle.h what it needs
 #define HAVE_MACH_ABSOLUTE_TIME
 #define HAVE_MACH_MACH_TIME_H
+#endif
 
 #include "contrib/cycle.h"
 
