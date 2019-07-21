@@ -412,7 +412,10 @@ extern "C" int AfUtf8_check(const size_t inLen, const char* const inPtr)
 		while(maskI < 16) maskSpace[maskI++] = 0xff;
 		data = _mm_and_si128(data, *(__m128i*) maskSpace);
 	}
-	__m128i next = _mm_insert_epi8(_mm_setzero_si128(), maskSTART, ignoreAtStart);
+	//__m128i next = _mm_insert_epi8(_mm_setzero_si128(), maskSTART, ignoreAtStart);
+	char temp[16] = {0};
+	temp[ignoreAtStart] = maskSTART;
+	__m128i next = _mm_loadu_si128((__m128i*)temp);
 
 	do {
 		if(len < 16) {
