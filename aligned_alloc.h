@@ -23,7 +23,7 @@
  *
  * We assert rather than throw things. You must allocate at least one byte.
  */
-class aligned_alloc {
+class my_aligned_alloc {
 private:
 	static std::atomic<size_t*> global_cached_allocation;
 	static size_t page_size;
@@ -112,20 +112,20 @@ public:
 	const static int START_OF_PAGE = 1;
 	const static int END_OF_PAGE = 2;
 
-	aligned_alloc(size_t size, int alignment_preference = NO_PAGE_PREFERENCE, int alignment_gap = 0)
+	my_aligned_alloc(size_t size, int alignment_preference = NO_PAGE_PREFERENCE, int alignment_gap = 0)
 	{
 		_init(size,alignment_preference,alignment_gap);
 		memset(begin(), 0, this->size());
 	}
 
 	template<typename _SourceContainerT>
-	aligned_alloc(const _SourceContainerT& c, int alignment_preference = NO_PAGE_PREFERENCE, int alignment_gap = 0)
+	my_aligned_alloc(const _SourceContainerT& c, int alignment_preference = NO_PAGE_PREFERENCE, int alignment_gap = 0)
 	{
 		_init(c.size(),alignment_preference,alignment_gap);
 		memcpy(begin(), &*c.begin(), size());
 	}
 
-	~aligned_alloc()
+	~my_aligned_alloc()
 	{
 		_finish();
 	}

@@ -179,7 +179,7 @@ public:
 		vector<unsigned char> v;
 		while(tests.next(v)) {
 			// give a particular alignment only if necessary
-			unique_ptr<aligned_alloc> aa;
+			unique_ptr<my_aligned_alloc> aa;
 			memory<unsigned char> m(v);
 			if(testAlignment) {
 				bool alignEnd = tests.alignEnd();
@@ -195,9 +195,9 @@ public:
 					int ptr = alignEnd ? (64 - alignOfs) : alignOfs;
 					m = memory<unsigned char>((unsigned char*) ptr, (unsigned char*) ptr);
 				} else {
-					aa = unique_ptr<aligned_alloc>(new aligned_alloc(
+					aa = unique_ptr<my_aligned_alloc>(new my_aligned_alloc(
 								v,
-								alignEnd ? aligned_alloc::END_OF_PAGE : aligned_alloc::START_OF_PAGE,
+								alignEnd ? my_aligned_alloc::END_OF_PAGE : my_aligned_alloc::START_OF_PAGE,
 								alignOfs));
 					m = memory<unsigned char>(aa.get()->begin(), aa.get()->end());
 				}
