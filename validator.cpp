@@ -154,68 +154,24 @@ vector<unsigned char> U8u16Validator::junk;
 
 
 
-class StangvikValidator : public Validator {
-public:
-	StangvikValidator() {;}
+typedef int (*simple_validator_function)(size_t len, const char* data);
 
-	std::string name() const { return "stangvik"; }
-	bool ours() const { return false; }
+template<auto fn>
+class SimpleValidator : public Validator {
+private:
+	std::string name_;
+	bool ours_;
+
+public:
+	SimpleValidator(std::string nameIn, bool oursIn = false)
+	: name_(nameIn), ours_(oursIn)
+	{;}
+
+	std::string name() const { return name_; }
+	bool ours() const { return ours_; }
 
 	bool validate(const memory<unsigned char>& v) {
-		return stangvik_is_valid_utf8(v.size(), (char*) &*v.begin());
-	}
-};
-
-
-class PostgresqlValidator : public Validator {
-public:
-	PostgresqlValidator() {;}
-
-	std::string name() const { return "postgresql"; }
-	bool ours() const { return false; }
-
-	bool validate(const memory<unsigned char>& v) {
-		return postgresql_is_valid_utf8(v.size(), (char*) &*v.begin());
-	}
-};
-
-
-class LemireValidator : public Validator {
-public:
-	LemireValidator() {;}
-
-	std::string name() const { return "lemire"; }
-	bool ours() const { return false; }
-
-	bool validate(const memory<unsigned char>& v) {
-		return lemire_is_valid_utf8(v.size(), (char*) &*v.begin());
-	}
-};
-
-
-class AfPrototypeValidator : public Validator {
-public:
-	AfPrototypeValidator() {;}
-
-	std::string name() const { return "verbose"; }
-	bool ours() const { return true; }
-
-	bool validate(const memory<unsigned char>& v) {
-		return AfUtf8_check_prototype(v.size(), (char*) &*v.begin());
-	}
-};
-
-
-
-class AfVectorValidator : public Validator {
-public:
-	AfVectorValidator() {;}
-
-	std::string name() const { return "vector"; }
-	bool ours() const { return true; }
-
-	bool validate(const memory<unsigned char>& v) {
-		return AfUtf8_check(v.size(), (char*) &*v.begin());
+		return fn(v.size(), (char*) &*v.begin());
 	}
 };
 
@@ -223,12 +179,12 @@ public:
 vector<Validator*> Validator::createAll(bool includeBrokenImpls) {
 	vector<Validator*> validators;
 
-	validators.push_back(new AfPrototypeValidator());
-	validators.push_back(new AfVectorValidator());
-	validators.push_back(new StangvikValidator());
-	validators.push_back(new PostgresqlValidator());
+	validators.push_back(new SimpleValidator<AfUtf8_check_prototype>("verbose", true));
+	validators.push_back(new SimpleValidator<AfUtf8_check>("vector", true));
+	validators.push_back(new SimpleValidator<stangvik_is_valid_utf8>("stangvik"));
+	validators.push_back(new SimpleValidator<postgresql_is_valid_utf8>("postgresql"));
 	validators.push_back(new U8u16Validator());
-	validators.push_back(new LemireValidator());
+	validators.push_back(new SimpleValidator<lemire_is_valid_utf8>("lemire"));
 
 	if(includeBrokenImpls) {
 		/* iconv isn't picky enough - it's actually CESU-8 */
