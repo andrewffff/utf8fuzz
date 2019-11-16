@@ -46,16 +46,16 @@ u8u16.o: codecs/u8u16.cpp codecs/u8u16.h
 	$(CXX) $(CXXFLAGS_NO_WERROR) -o $@ -c $<
 
 z_validate_avx2.o: codecs/faster-utf8-validator/z_validate.c
-	$(CC) $(CXXFLAGS_NO_WERROR) -DAVX2 -o $@ -c $<
+	$(CC) -std=gnu11 -march=native -Wall -Wextra -Werror -O3 -DAVX2 -o $@ -c $<
 
 z_validate_sse4.o: codecs/faster-utf8-validator/z_validate.c
-	$(CC) $(CXXFLAGS_NO_WERROR) -DSSE4 -o $@ -c $<
+	$(CC) -std=gnu11 -march=native -Wall -Wextra -Werror -O3 -DSSE4 -o $@ -c $<
 
 zwegner.o: codecs/zwegner.c codecs/zwegner.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 lemire.o: codecs/lemire.c codecs/lemire.h codecs/fastvalidate-utf-8/include/simdutf8check.h
-	$(CC) $(CFLAGS_NO_WERROR) -o $@ -c $<
+	$(CC) -std=c99 -march=native -O3 -Wall -D_GNU_SOURCE -o $@ -c $<
 
 af_with_verbose_hack.o: codecs/af_with_verbose_hack.cpp codecs/AfUtf8/AfUtf8.cpp codecs/AfUtf8/AfUtf8.h
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
