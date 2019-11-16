@@ -6,7 +6,7 @@
 #include <cerrno>
 
 #include <stdlib.h>
-#include <xlocale.h>
+#include <locale.h>
 
 #include <vector>
 #include <string>
@@ -17,6 +17,7 @@
 #include "codecs/stangvik.h"
 #include "codecs/postgresql.h"
 #include "codecs/u8u16.h"
+#include "codecs/lemire.h"
 
 using namespace std;
 using namespace AfUtf8;
@@ -179,6 +180,19 @@ public:
 };
 
 
+class LemireValidator : public Validator {
+public:
+	LemireValidator() {;}
+
+	std::string name() const { return "lemire"; }
+	bool ours() const { return false; }
+
+	bool validate(const memory<unsigned char>& v) {
+		return lemire_is_valid_utf8(v.size(), (char*) &*v.begin());
+	}
+};
+
+
 class AfPrototypeValidator : public Validator {
 public:
 	AfPrototypeValidator() {;}
@@ -214,6 +228,7 @@ vector<Validator*> Validator::createAll(bool includeBrokenImpls) {
 	validators.push_back(new StangvikValidator());
 	validators.push_back(new PostgresqlValidator());
 	validators.push_back(new U8u16Validator());
+	validators.push_back(new LemireValidator());
 
 	if(includeBrokenImpls) {
 		/* iconv isn't picky enough - it's actually CESU-8 */

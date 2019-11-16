@@ -44,7 +44,7 @@ using AfUtf8::memory;
 
 class Runner {
 private:
-	bool dieOnFirstFailure, includeBrokenImpls;
+	bool dieOnFirstFailure;
 	bool testAlignment;
 	bool forceAlignment, forceAlignmentFromEnd;
 	int forceAlignmentOfs;
@@ -184,7 +184,7 @@ public:
 			memory<unsigned char> m(v);
 			if(testAlignment) {
 				bool alignEnd = tests.alignEnd();
-				int alignOfs = tests.alignment();
+				intptr_t alignOfs = tests.alignment();
 				if(forceAlignment) {
 					alignEnd = forceAlignmentFromEnd;
 					alignOfs = forceAlignmentOfs;
@@ -193,7 +193,7 @@ public:
 				// aligned_alloc doesn't do empty allocations, so
 				// put those on the zero page
 				if(!m.size()) {
-					int ptr = alignEnd ? (64 - alignOfs) : alignOfs;
+					intptr_t ptr = alignEnd ? (64 - alignOfs) : alignOfs;
 					m = memory<unsigned char>((unsigned char*) ptr, (unsigned char*) ptr);
 				} else {
 					aa = unique_ptr<my_aligned_alloc>(new my_aligned_alloc(

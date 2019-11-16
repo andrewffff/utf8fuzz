@@ -96,18 +96,21 @@ In particular, we don't consider [derivatives like CESU-8 or Modified UTF-8](htt
 
 ### Included
 
-These are working validators:
+Added in 2019:
+* 
+
+These are working validators from 2013:
 
 * *vector* is my AfUtf8 UTF-8 validator, implemented using SSE4.1 intrinsics.
 * *verbose* is a particularly inefficient UTF-8 validator used to test the core ideas in, and sharing code with, the *vector* validator.
 * *stangvik* is the UTF-8 validator from Einar Otto Stangvik's [ws](https://github.com/einaros/ws) WebSocket implementation.
 * *postgresql* is the UTF-8 validator from the [PostgreSQL]("http://www.postgresql.org/") database, tweaked to accept inline zero bytes (which are legal UTF-8, but not in string values in PostgreSQL).
 
-These are working converters, meaning that we use them to convert from UTF-8 to another encoding and see if an error is raised. It's not really fair to compare them to a validator, performance-wise, because they are doing more work!
+These are working converters from 2013, meaning that we use them to convert from UTF-8 to another encoding and see if an error is raised. It's not really fair to compare them to a validator, performance-wise, because they are doing more work!
 
 * *u8u16* is Prof. Rob Cameron's [vectorised UTF-8 to UTF-16 converter](http://u8u16.costar.sfu.ca/).
 
-These are broken converters, and disabled by default (specifically, they accept things legal in [UTF-8 variants](http://en.wikipedia.org/wiki/UTF-8#Derivatives) which are not, strictly speaking, valid UTF-8):
+These converters are not strict UTF-8 validators, and disabled by default. They accept things legal only in [UTF-8 variants](http://en.wikipedia.org/wiki/UTF-8#Derivatives).
 
 * *iconv* is the GNU iconv library as provided by the native operating system.
 * *mbstowcs* is the C library mb* converter functions as provided by the native operating system. (Mac OS X's are basically pulled straight from FreeBSD).
@@ -115,7 +118,7 @@ These are broken converters, and disabled by default (specifically, they accept 
 
 ### Not included
 
-These are UTF-8 validators / converters which I've not yet taken the effort to include, for various reasons enumerated below (basically, I took a quick look and decided they are unlikely to be very fast):
+(As of 2013) These are UTF-8 validators / converters which I've not yet taken the effort to include, for various reasons enumerated below (basically, I took a quick look and decided they are unlikely to be very fast):
 
 * Firefox's UTF8 -> UTF16 is in http://mxr.mozilla.org/mozilla-central/source/intl/uconv/src/nsUTF8ToUnicode.cpp and http://mxr.mozilla.org/mozilla-central/source/intl/uconv/src/nsUTF8ToUnicodeSSE2.cpp. Discussion at https://bugzilla.mozilla.org/show_bug.cgi?id=506430 doesn't indicate a speed win over u8u16. It isn't fully vectorised but uses SSE2 for unpacking ASCII runs.
 
