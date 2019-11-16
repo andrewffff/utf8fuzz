@@ -1,4 +1,3 @@
-// thin wrapper around 
 #ifndef LEMIRE_UTF_8_H
 #define LEMIRE_UTF_8_H
 

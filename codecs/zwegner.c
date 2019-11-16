@@ -1,13 +1,14 @@
-// thin wrapper around the pg_* postgresql stuff
-#if 0
 #include "zwegner.h"
 
-// this file contains this inline:
-//static bool validate_utf8_fast_avx(const char *src, size_t len)
-#include "fastvalidate-utf-8/include/simdutf8check.h"
+extern int z_validate_utf8_avx2(const char* data, size_t len);
+extern int z_validate_utf8_sse4(const char* data, size_t len);
 
-int lemire_is_valid_utf8 (size_t len, char *value)
+int zwegner_avx2_is_valid_utf8 (size_t len, char *value)
 {
-	return validate_utf8_fast_avx(value, len);
+	return z_validate_utf8_avx2(value, len);
 }
-#endif
+
+int zwegner_sse4_is_valid_utf8 (size_t len, char *value)
+{
+	return z_validate_utf8_sse4(value, len);
+}

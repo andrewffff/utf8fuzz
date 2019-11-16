@@ -18,6 +18,7 @@
 #include "codecs/postgresql.h"
 #include "codecs/u8u16.h"
 #include "codecs/lemire.h"
+#include "codecs/zwegner.h"
 
 using namespace std;
 using namespace AfUtf8;
@@ -185,6 +186,8 @@ vector<Validator*> Validator::createAll(bool includeBrokenImpls) {
 	validators.push_back(new SimpleValidator<postgresql_is_valid_utf8>("postgresql"));
 	validators.push_back(new U8u16Validator());
 	validators.push_back(new SimpleValidator<lemire_is_valid_utf8>("lemire"));
+	validators.push_back(new SimpleValidator<zwegner_avx2_is_valid_utf8>("zwegner-avx2", true));
+	validators.push_back(new SimpleValidator<zwegner_sse4_is_valid_utf8>("zwegner-sse4", true));
 
 	if(includeBrokenImpls) {
 		/* iconv isn't picky enough - it's actually CESU-8 */
