@@ -8,7 +8,7 @@ test: utf8fuzz runtest
 runtest:
 	./utf8fuzz -s -vv
 
-OPTFLAGS += -O2
+OPTFLAGS += -O3
 
 CXX = clang++
 CXXFLAGS_NO_WERROR = $(OPTFLAGS) -g -Wall -Wno-gnu-array-member-paren-init -mavx2 -std=c++17
