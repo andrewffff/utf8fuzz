@@ -11,7 +11,7 @@ runtest:
 OPTFLAGS += -O2
 
 CXX = clang++
-CXXFLAGS_NO_WERROR = $(OPTFLAGS) -g -Wall -Wno-gnu-array-member-paren-init -mavx2
+CXXFLAGS_NO_WERROR = $(OPTFLAGS) -g -Wall -Wno-gnu-array-member-paren-init -mavx2 -std=c++17
 CXXFLAGS = $(CXXFLAGS_NO_WERROR) -Werror
 CC = clang
 CFLAGS_NO_WERROR = $(OPTFLAGS) -g -Wall -mavx2
