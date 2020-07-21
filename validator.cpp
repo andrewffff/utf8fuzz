@@ -13,7 +13,7 @@
 
 #include <iconv.h>
 
-#include "codecs/AfUtf8/afutf8.h"
+#include "codecs/AfUtf8/AfUtf8.h"
 #include "codecs/stangvik.h"
 #include "codecs/postgresql.h"
 #include "codecs/u8u16.h"
