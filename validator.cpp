@@ -6,7 +6,7 @@
 #include <cerrno>
 
 #include <stdlib.h>
-#include <xlocale.h>
+#include <locale.h>
 
 #include <vector>
 #include <string>
