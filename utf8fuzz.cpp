@@ -44,7 +44,7 @@ using AfUtf8::memory;
 
 class Runner {
 private:
-	bool dieOnFirstFailure, includeBrokenImpls;
+	bool dieOnFirstFailure;
 	bool testAlignment;
 	bool forceAlignment, forceAlignmentFromEnd;
 	int forceAlignmentOfs;
