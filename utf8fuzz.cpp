@@ -264,7 +264,7 @@ void usage() {
 	printf("   ");
 
 	vector<Validator*> validators = Validator::createAll(true); // XXX leak
-	for(Validator* v : validators) 
+	for(Validator* v : validators)
 		printf("%s ", v->name().c_str());
 	printf("\n\n");
 }
