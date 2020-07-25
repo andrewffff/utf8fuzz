@@ -6,14 +6,14 @@
 #include <cerrno>
 
 #include <stdlib.h>
-#include <xlocale.h>
+#include <locale.h>
 
 #include <vector>
 #include <string>
 
 #include <iconv.h>
 
-#include "codecs/AfUtf8/afutf8.h"
+#include "codecs/AfUtf8/AfUtf8.h"
 #include "codecs/stangvik.h"
 #include "codecs/postgresql.h"
 #include "codecs/u8u16.h"
@@ -66,12 +66,12 @@ private:
 
 public:
 	IconvValidator() {; }
-	
+
 	std::string name() const { return "iconv"; }
 	bool ours() const { return false; }
 
 	bool validate(const memory<unsigned char>& v) {
-	
+
 		if(!init) {
 			init = true;
 			cd = iconv_open("UTF-8", "UTF-8");
@@ -79,20 +79,20 @@ public:
 		} else {
 			iconv(cd, 0, 0, 0, 0);
 		}
-	
+
 		if(junk.size() < 2*v.size())
 			junk.resize(2*v.size());
-	
+
 		char* inbytes = (char*) (&v[0]);
 		char* outbytes = (char*) (&junk[0]);
 		size_t inbytesleft = v.size();
 		size_t outbytesleft = junk.size();
-		
+
 		size_t result = iconv(cd, &inbytes, &inbytesleft, &outbytes, &outbytesleft);
-	
+
 		assert(inbytes + inbytesleft == (char*) &*v.end());
 		assert(outbytes + outbytesleft == (char*) &*junk.end());
-	
+
 		assert(result == -1 || result == 0);
 		if(result == -1) {
 			assert(errno != E2BIG);
@@ -117,7 +117,7 @@ private:
 
 public:
 	U8u16Validator() {; }
-	
+
 	std::string name() const { return "u8u16"; }
 	bool ours() const { return false; }
 
@@ -132,12 +132,12 @@ public:
 		char* outbytes = (char*) (&junk[0]);
 		size_t inbytesleft = v.size();
 		size_t outbytesleft = junk.size();
-		
+
 		size_t result = u8u16(&inbytes, &inbytesleft, &outbytes, &outbytesleft);
-	
+
 		assert(inbytes + inbytesleft == (char*) &*v.end());
 		assert(outbytes + outbytesleft == (char*) &*junk.end());
-	
+
 		assert(result == -1 || result == 0);
 		if(result == -1) {
 			assert(errno != E2BIG);

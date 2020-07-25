@@ -44,7 +44,7 @@ using AfUtf8::memory;
 
 class Runner {
 private:
-	bool dieOnFirstFailure, includeBrokenImpls;
+	bool dieOnFirstFailure;
 	bool testAlignment;
 	bool forceAlignment, forceAlignmentFromEnd;
 	int forceAlignmentOfs;
@@ -193,7 +193,7 @@ public:
 				// aligned_alloc doesn't do empty allocations, so
 				// put those on the zero page
 				if(!m.size()) {
-					int ptr = alignEnd ? (64 - alignOfs) : alignOfs;
+					intptr_t ptr = alignEnd ? (64 - alignOfs) : alignOfs;
 					m = memory<unsigned char>((unsigned char*) ptr, (unsigned char*) ptr);
 				} else {
 					aa = unique_ptr<my_aligned_alloc>(new my_aligned_alloc(
@@ -264,7 +264,7 @@ void usage() {
 	printf("   ");
 
 	vector<Validator*> validators = Validator::createAll(true); // XXX leak
-	for(Validator* v : validators) 
+	for(Validator* v : validators)
 		printf("%s ", v->name().c_str());
 	printf("\n\n");
 }
